@@ -25,7 +25,7 @@ class Pattern
   end
 end
 
-class BasePattern < Pattern
+class BasicPattern < Pattern
   attr_reader :root
 
   def initialize(designation, pattern_num, root, stems)

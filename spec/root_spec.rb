@@ -1,6 +1,7 @@
+require 'rspec'
 require 'spec_helper'
 
-describe 'BasicRoot' do
+RSpec.describe 'BasicRoot' do
   let!(:test_root) { BasicRoot.new('PK', 'EXPERIENCE / UNDERGO A STATE OR FEELING') }
   let!(:informal1) do 
     BasicPattern.new(:informal, 1, test_root, [
@@ -17,7 +18,7 @@ describe 'BasicRoot' do
   end
   let!(:formal1) do
     DerivedPattern.new(:formal, 1, :informal1, 
-                       'except referring to a formal/institutionalized/symbolic ' \
+                       'except referring to a formal/institutionalized/symbolic '\
                        'expressions of the particular emotion.')
   end
   let!(:formal2) do
