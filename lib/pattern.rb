@@ -49,8 +49,11 @@ class BasicPattern < Pattern
 end
 
 class DerivedPattern < Pattern
-  def initialize(designation, pattern_num, base_pattern)
-
+  attr_reader :base_pattern, :suffix
+  def initialize(designation, pattern_num, base_pattern, suffix)
+    super(designation, pattern_num)
+    @base_pattern = base_pattern
+    
   end
 
 end

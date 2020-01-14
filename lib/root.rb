@@ -19,7 +19,9 @@ end
 
 class BasicRoot < Root
   def add_patterns(pattern_or_array)
-    pattern_array = [pattern_or_array] if pattern_or_array.ancestors.include?(Pattern)
-    pattern_array.each { |pattern| @patterns[pattern.designation][pattern.pattern_num] = pattern }
+    pattern_array = [pattern_or_array] unless pattern_or_array.class == Array
+    pattern_array.each do |pattern| 
+      @patterns[pattern.designation][pattern.pattern_num] = pattern
+    end
   end
 end

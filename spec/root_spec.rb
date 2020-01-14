@@ -5,9 +5,9 @@ RSpec.describe 'BasicRoot' do
   let!(:test_root) { BasicRoot.new('PK', 'EXPERIENCE / UNDERGO A STATE OR FEELING') }
   let!(:informal1) do 
     BasicPattern.new(:informal, 1, test_root, [
-    'non-volitional (i.e., affective) experience of a state/feeling/emotion; feel (an) emotion [state + content]',
-    'act or action caused by non-volitional experience of state or feeling',
-    'cause or causal circumstance for non-volitional state/feeling'
+      'non-volitional (i.e., affective) experience of a state/feeling/emotion; feel (an) emotion [state + content]',
+      'act or action caused by non-volitional experience of state or feeling',
+      'cause or causal circumstance for non-volitional state/feeling'
    ])
   end
   let!(:informal2) do
