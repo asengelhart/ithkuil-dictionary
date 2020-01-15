@@ -39,4 +39,11 @@ end
 
 class DerivedRoot < Root
   def initialize(value, translation, base_root)
+    super(value, translation)
+    @base_root = base_root
+  end
+
+  def patterns(designation = nil, pattern_num = nil)
+    base_root.patterns(designation, pattern_num)
+  end
 end
