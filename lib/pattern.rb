@@ -34,7 +34,6 @@ class BasicPattern < Pattern
     super(designation, pattern_num)
     @stems = stems
     @root = root_ref
-    # binding.pry
     @root.add_patterns(self)
   end
 
@@ -55,6 +54,7 @@ class DerivedPattern < Pattern
     super(designation, pattern_num)
     @base_pattern = base_pattern
     @suffix = suffix
+    @base_pattern.root.add_patterns(self)
   end
 
   def stems(index = nil)
@@ -64,6 +64,10 @@ class DerivedPattern < Pattern
     else
       "#{base_stems}, #{suffix}"
     end
+  end
+
+  def root
+    base_pattern.root
   end
 
 end

@@ -31,23 +31,23 @@ RSpec.describe 'BasicRoot' do
      ])
     end
     let!(:informal2) do
-      DerivedPattern.new(:informal, 2, :informal1, 'w/ focus on process itself') 
+      DerivedPattern.new(:informal, 2, informal1, 'w/ focus on process itself') 
     end 
     let!(:informal3) do
-      DerivedPattern.new(:informal, 3, :informal1, 'w/ focus on experiential state/feeling itself')
+      DerivedPattern.new(:informal, 3, informal1, 'w/ focus on experiential state/feeling itself')
     end
     let!(:formal1) do
-      DerivedPattern.new(:formal, 1, :informal1, 
+      DerivedPattern.new(:formal, 1, informal1, 
                          'except referring to a formal/institutionalized/symbolic '\
                          'expressions of the particular emotion.')
     end
     let!(:formal2) do
-      DerivedPattern.new(:formal, 2, :informal2, 
+      DerivedPattern.new(:formal, 2, informal2, 
         'except referring to a formal/institutionalized/symbolic expressions ' \
         'of the particular emotion.')
     end
     let!(:formal3) do
-      DerivedPattern.new(:formal, 3, :informal3, 
+      DerivedPattern.new(:formal, 3, informal3, 
         'except referring to a formal/institutionalized/symbolic expressions ' \
         'of the particular emotion.')
     end
