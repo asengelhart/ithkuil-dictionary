@@ -28,12 +28,12 @@ end
 class BasicPattern < Pattern
   attr_reader :root
 
-  def initialize(designation, pattern_num, root, stems)
+  def initialize(designation, pattern_num, root_ref, stems)
     raise StemError unless stems.size == 3
 
     super(designation, pattern_num)
     @stems = stems
-    @root = root
+    @root = root_ref
     # binding.pry
     @root.add_patterns(self)
   end
