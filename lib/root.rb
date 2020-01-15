@@ -38,6 +38,7 @@ class BasicRoot < Root
 end
 
 class DerivedRoot < Root
+  attr_reader :base_root
   def initialize(value, translation, base_root)
     super(value, translation)
     @base_root = base_root
