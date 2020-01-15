@@ -61,17 +61,18 @@ RSpec.describe 'BasicRoot' do
 
     describe "#search" do
       it "returns root when search(param) matches translation" do
-        expect(test_root.search('feeling')).to include(test_root)
+        expect(test_root.search('feeling')).to eq(test_root)
       end
 
       it "returns array with root and [designation, pattern_num, stem_num] for each matching stem" do
-        expect(test_root.search('cause')).to include(test_root,
+        expect(test_root.search('cause')).to eq([test_root,
                                                      [:informal, 1, 3],
                                                      [:informal, 2, 3],
                                                      [:informal, 3, 3],
                                                      [:formal, 1, 3],
                                                      [:formal, 2, 3],
-                                                     [:formal, 3, 3])
+                                                     [:formal, 3, 3]
+                                                  ])
       end
     end
   end

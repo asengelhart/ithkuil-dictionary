@@ -35,6 +35,19 @@ class BasicRoot < Root
       return @patterns[designation][pattern_num - 1]
     end
   end
+
+  def search(param)
+    translation.include?(param) ? self : search_patterns(param)
+  end
+
+  def search_patterns(param)
+    results = [self]
+    patterns.each do |designation, pattern_array|
+      pattern_array.each_with_index do |pattern, pattern_index|
+        pattern.stems.each_with_index { |stem, stem_index| results << [designation, pattern_index + 1, stem_index + 1] if stem.include?(param) }
+      end
+    end
+  end
 end
 
 class DerivedRoot < Root
