@@ -1,4 +1,5 @@
-require_relative './pattern'
+require_relative './root'
+require 'pry'
 
 class Pattern
   attr_reader :designation, :pattern_num
@@ -7,7 +8,6 @@ class Pattern
     raise DesignationError unless [:formal, :informal].include?(designation)
     raise PatternNumError unless (1..3).include?(pattern_num)
 
-    @root = root
     @designation = designation
     @pattern_num = pattern_num
   end
@@ -34,7 +34,8 @@ class BasicPattern < Pattern
     super(designation, pattern_num)
     @stems = stems
     @root = root
-    @root.add_pattern(self)
+    #binding.pry
+    @root.add_patterns(self)
   end
 
   def stems(index = nil)
@@ -53,7 +54,7 @@ class DerivedPattern < Pattern
   def initialize(designation, pattern_num, base_pattern, suffix)
     super(designation, pattern_num)
     @base_pattern = base_pattern
-    
+    @suffix = suffix
   end
 
 end

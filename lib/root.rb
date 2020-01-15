@@ -21,7 +21,7 @@ class BasicRoot < Root
   def add_patterns(pattern_or_array)
     pattern_array = [pattern_or_array] unless pattern_or_array.class == Array
     pattern_array.each do |pattern| 
-      @patterns[pattern.designation][pattern.pattern_num] = pattern
+      @patterns[pattern.designation][pattern.pattern_num - 1] = pattern
     end
   end
 end
