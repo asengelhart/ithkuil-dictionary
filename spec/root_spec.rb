@@ -61,4 +61,20 @@ RSpec.describe 'BasicRoot' do
       expect(test_root.patterns(:formal, 3)).to eq(formal3)
     end
   end
+
+  context "DerivedRoot" do
+    let(:derived_root) { DerivedRoot.new('-Ç-', 'excitement/thrill', test_root) }
+
+    it 'has its own phonetic value' do
+      expect(derived_root.value).to eq('-Ç-')
+    end
+
+    it 'has its own translation' do
+      expect(derived_root.translation).to eq('excitement/thrill')
+    end
+
+    it 'has the same patterns and stems as its parent root' do
+      expect(derived_root.patterns).to eq(test_root.patterns)
+    end
+  end
 end
