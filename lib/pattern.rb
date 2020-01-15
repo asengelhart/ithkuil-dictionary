@@ -39,7 +39,7 @@ class BasicPattern < Pattern
   end
 
   def stems(index = nil)
-    index ? @stems[index] : @stems
+    index ? @stems[index - 1] : @stems
   end
 
   class StemError < StandardError
@@ -55,6 +55,15 @@ class DerivedPattern < Pattern
     super(designation, pattern_num)
     @base_pattern = base_pattern
     @suffix = suffix
+  end
+
+  def stems(index = nil)
+    base_stems = base_pattern.stems(index)
+    if base_stems.class == Array
+      base_stems.map { |stem| "#{stem}, #{suffix}" }
+    else
+      "#{base_stems}, #{suffix}"
+    end
   end
 
 end

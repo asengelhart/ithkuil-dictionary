@@ -61,7 +61,7 @@ RSpec.describe 'Pattern' do
     end
 
     it "has a number" do
-      expect(informal2.designation).to eq(2)
+      expect(informal2.pattern_num).to eq(2)
     end
 
     it "is associated with a BasicPattern" do
