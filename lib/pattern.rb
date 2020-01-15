@@ -34,7 +34,7 @@ class BasicPattern < Pattern
     super(designation, pattern_num)
     @stems = stems
     @root = root
-    #binding.pry
+    # binding.pry
     @root.add_patterns(self)
   end
 
