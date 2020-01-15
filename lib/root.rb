@@ -21,7 +21,7 @@ class BasicRoot < Root
   def add_patterns(pattern_or_array)
     pattern_array = [pattern_or_array] unless pattern_or_array.class == Array
     pattern_array.each do |pattern|
-      binding.pry
+      # binding.pry
       @patterns[pattern.designation][pattern.pattern_num - 1] = pattern
     end
   end
@@ -35,4 +35,8 @@ class BasicRoot < Root
       return @patterns[designation][pattern_num - 1]
     end
   end
+end
+
+class DerivedRoot < Root
+  def initialize(value, translation, base_root)
 end

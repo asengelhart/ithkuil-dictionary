@@ -18,8 +18,6 @@ RSpec.describe 'BasicRoot' do
       expect(test_root.patterns(:informal)).to eq([nil, nil, nil])
       expect(test_root.patterns(:formal)).to eq([nil, nil, nil])
     end
-
-
   end
 
   context "populated BasicRoot" do
@@ -59,6 +57,22 @@ RSpec.describe 'BasicRoot' do
       expect(test_root.patterns(:formal, 1)).to eq(formal1)
       expect(test_root.patterns(:formal, 2)).to eq(formal2)
       expect(test_root.patterns(:formal, 3)).to eq(formal3)
+    end
+
+    describe "#search" do
+      it "returns root when search(param) matches translation" do
+        expect(test_root.search('feeling')).to include(test_root)
+      end
+
+      it "returns array with root and [designation, pattern_num, stem_num] for each matching stem" do
+        expect(test_root.search('cause')).to include(test_root,
+                                                     [:informal, 1, 3],
+                                                     [:informal, 2, 3],
+                                                     [:informal, 3, 3],
+                                                     [:formal, 1, 3],
+                                                     [:formal, 2, 3],
+                                                     [:formal, 3, 3])
+      end
     end
   end
 
