@@ -10,7 +10,7 @@ RSpec.describe 'BasicRoot' do
     end
 
     it 'has a translation' do
-      expect(test_root.translation).to eq('EXPERIENCE / UNDERGO A STATE OR FEELING')
+      expect(test_root.translation).to eq('EXPERIENCE / UNDERGO A STATE OR FEELING'.downcase)
     end
 
     it 'initializes with an empty hash-of-arrays' do
