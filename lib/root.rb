@@ -1,20 +1,26 @@
 require_relative './pattern'
 require 'pry'
 class Root
-  attr_reader :value, :translation, :derivations
+  attr_reader :value
   @@all = []
 
-  def initialize(value, translation, derivations = nil)
+  def initialize(value, translation)
     @value = value
     @translation = translation
-    @derivations = derivations
     @@all << self
+  end
+
+  def translation
+    @translation.downcase
   end
 end
 
 class BasicRoot < Root
-  def initialize(value, translation, derivations = nil)
-    super(value, translation, derivations)
+  attr_accessor :sample_derivations
+
+  def initialize(value, translation, sample_derivations = nil)
+    super(value, translation)
+    @sample_derivations = sample_derivations
     @patterns = { informal: Array.new(3), formal: Array.new(3) }
   end
 
@@ -47,6 +53,7 @@ class BasicRoot < Root
         pattern.stems.each_with_index { |stem, stem_index| results << [designation, pattern_index + 1, stem_index + 1] if stem.include?(param) }
       end
     end
+    results.size > 1 ? results : nil
   end
 end
 
@@ -59,5 +66,9 @@ class DerivedRoot < Root
 
   def patterns(designation = nil, pattern_num = nil)
     base_root.patterns(designation, pattern_num)
+  end
+
+  def search(param)
+    translation.include?(param) ? self : nil
   end
 end

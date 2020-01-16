@@ -60,19 +60,23 @@ RSpec.describe 'BasicRoot' do
     end
 
     describe "#search" do
-      it "returns root when search(param) matches translation" do
+      it 'returns root when search(param) matches translation' do
         expect(test_root.search('feeling')).to eq(test_root)
       end
 
-      it "returns array with root and [designation, pattern_num, stem_num] for each matching stem" do
+      it 'returns array with root and [designation, pattern_num, stem_num] for each matching stem' do
         expect(test_root.search('cause')).to eq([test_root,
-                                                     [:informal, 1, 3],
-                                                     [:informal, 2, 3],
-                                                     [:informal, 3, 3],
-                                                     [:formal, 1, 3],
-                                                     [:formal, 2, 3],
-                                                     [:formal, 3, 3]
+                                                     [:informal, 1, 2], [:informal, 1, 3],
+                                                     [:informal, 2, 2], [:informal, 2, 3],
+                                                     [:informal, 3, 2], [:informal, 3, 3],
+                                                     [:formal, 1, 2], [:formal, 1, 3],
+                                                     [:formal, 2, 2], [:formal, 2, 3],
+                                                     [:formal, 3, 2], [:formal, 3, 3]
                                                   ])
+      end
+
+      it "returns nil when given a word that doesn't match anything" do
+        expect(test_root.search('Willy Wonka')).to eq(nil)
       end
     end
   end
@@ -91,5 +95,7 @@ RSpec.describe 'BasicRoot' do
     it 'has the same patterns and stems as its parent root' do
       expect(derived_root.patterns).to eq(test_root.patterns)
     end
+
+
   end
 end

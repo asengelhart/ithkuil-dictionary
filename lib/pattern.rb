@@ -38,7 +38,7 @@ class BasicPattern < Pattern
   end
 
   def stems(index = nil)
-    index ? @stems[index - 1] : @stems
+    index ? @stems[index - 1].downcase : @stems.map{ |stem| stem.downcase }
   end
 
   class StemError < StandardError
@@ -49,12 +49,16 @@ class BasicPattern < Pattern
 end
 
 class DerivedPattern < Pattern
-  attr_reader :base_pattern, :suffix
+  attr_reader :base_pattern
   def initialize(designation, pattern_num, base_pattern, suffix)
     super(designation, pattern_num)
     @base_pattern = base_pattern
     @suffix = suffix
     @base_pattern.root.add_patterns(self)
+  end
+
+  def suffix
+    @suffix.downcase
   end
 
   def stems(index = nil)
@@ -69,5 +73,4 @@ class DerivedPattern < Pattern
   def root
     base_pattern.root
   end
-
 end
