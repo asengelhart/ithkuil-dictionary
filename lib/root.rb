@@ -16,11 +16,11 @@ class Root
 end
 
 class BasicRoot < Root
-  attr_accessor :sample_derivations
+  attr_accessor :notes
 
-  def initialize(value, translation, sample_derivations = nil)
+  def initialize(value, translation, notes = nil)
     super(value, translation)
-    @sample_derivations = sample_derivations
+    @notes = notes
     @patterns = { informal: Array.new(3), formal: Array.new(3) }
   end
 
@@ -43,7 +43,7 @@ class BasicRoot < Root
   end
 
   def search(param)
-    translation.include?(param) ? self : search_patterns(param)
+    translation.include?(param) || notes.include?(param) ? self : search_patterns(param)
   end
 
   def search_patterns(param)
