@@ -1,6 +1,7 @@
 require "bundler/setup"
 require_relative "../lib/root"
 require_relative "../lib/pattern"
+require_relative "../lib/scraper"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
