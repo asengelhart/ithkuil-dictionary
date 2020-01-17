@@ -82,10 +82,10 @@ RSpec.describe 'BasicRoot' do
   end
 
   context "DerivedRoot" do
-    let(:derived_root) { DerivedRoot.new('-Ç-', 'excitement/thrill', test_root) }
+    let(:derived_root) { DerivedRoot.new('Ç', 'excitement/thrill', test_root) }
 
     it 'has its own phonetic value' do
-      expect(derived_root.value).to eq('-Ç-')
+      expect(derived_root.value).to eq('Ç')
     end
 
     it 'has its own translation' do
