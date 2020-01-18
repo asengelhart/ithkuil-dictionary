@@ -11,6 +11,9 @@ class Scraper
   RootMatcher = /-[BCÇČDFGHJKLĻMNŇPQRŘSŠTŢVWXYZŻŽ’]+-/
   @@dictionary = []
 
+
+  private
+
   def self.load_dictionary(html)
     to_search = html.xpath("//table | //p")
     to_search.each do |node|
@@ -32,7 +35,29 @@ class Scraper
   end
 
   def self.make_patterns(root, rows)
-    
+    basic_pattern = make_a_pattern(root, rows[(2..4)], 0)
+    if rows.count == 9 # #independent informal complementary stems
+      complementary1 = make_a_pattern(root, rows[(7..9)], 0)
+      complementary2 = make_a_pattern(root, rows[(7..9)], 1)
+    else # derived complementary patterns
+      complementary1 = make_a_pattern(root, rows[7], 0, basic_pattern)
+      complementary2 = make_a_pattern(root, rows[7], 1, basic_pattern)
+    end
+    if rows[3].xpath('./td').count == 2 # independent formal patterns
+      formal_pattern = make_a_pattern(root, rows[(2..4)], 1)
+      if rows.count == 9 # independent formal complementary patterns
+        formal_complement1 = make_a_pattern(root, rows[(6..8)], 2)
+        formal_complement2 = make_a_pattern(root, rows[(6..8)], 3)
+      else
+        formal_complement1 = make_a_pattern(root, rows[6], 2, complementary1)
+        formal_complement2 = make_a_pattern(root, rows[6], 3, complementary2)
+      end
+    else # formal patterns are derived
+      formal_pattern = make_a_pattern(root, rows[2], 1, basic_pattern)
+      formal_complement1 = make_a_pattern(root, rows[2], 1, complementary1)
+      formal_complement2 = make_a_pattern(root, rows[2], 1, complementary2)
+    end
+    return nil
   end
 end
 
