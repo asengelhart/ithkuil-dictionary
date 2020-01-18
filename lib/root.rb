@@ -13,15 +13,20 @@ class Root
   def translation
     @translation.downcase
   end
+
+  def all
+    @@all
+  end
 end
 
 class BasicRoot < Root
-  attr_accessor :notes
+  attr_accessor :notes, :derived_roots
 
   def initialize(value, translation, notes = nil)
     super(value, translation)
     @notes = notes
     @patterns = { informal: Array.new(3), formal: Array.new(3) }
+    @derived_roots = []
   end
 
   def add_patterns(pattern_or_array)
@@ -39,6 +44,27 @@ class BasicRoot < Root
       return @patterns[designation]
     else
       return @patterns[designation][pattern_num - 1]
+    end
+  end
+
+  def stems(designation = nil, pattern_num = nil, stem_num = nil)
+    pattern_results = patterns(designation, pattern_num)
+    if stem_num
+      pattern_results[stem_num]
+    elsif pattern_num
+      pattern_results.stems
+    elsif designation
+      pattern_results.reduce([]) do |memo, pattern|
+        memo << pattern.stems
+        memo.flatten
+      end
+    else # designation.is_nil?
+      pattern_results.reduce([]) do |memo, patterns|
+        patterns.reduce(memo) do |memo2, pattern|
+          memo2 << pattern.stems
+          memo2.flatten
+        end
+      end
     end
   end
 
@@ -62,6 +88,7 @@ class DerivedRoot < Root
   def initialize(value, translation, base_root)
     super(value, translation)
     @base_root = base_root
+    base_root.derived_roots << self
   end
 
   def patterns(designation = nil, pattern_num = nil)
