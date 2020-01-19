@@ -5,9 +5,8 @@ require_relative './pattern.rb'
 require 'pry'
 
 class Scraper
-  BASE_URL = 'http://www.ithkuil.net/lexicon.htm'
-  Html = open(BASE_URL)
-  Scraper.load_dictionary(Nokogiri::HTML(Html))
+  # BASE_URL = 'http://www.ithkuil.net/lexicon.htm'
+  # Html = open(BASE_URL)
   RootMatcher = /-([BCÇČDFGHJKLĻMNŇPQRŘSŠTŢVWXYZŻŽ’]+)-/
   @@dictionary = []
 
@@ -36,9 +35,10 @@ class Scraper
     result
   end
 
-  private
-
-  def self.load_dictionary(html)
+  def self.load_dictionary # (html)
+    base_url = 'http://www.ithkuil.net/lexicon.htm'
+    html = Nokogiri::HTML(open(base_url))
+    binding.pry
     to_search = html.xpath("//table | //p")
     to_search.each do |node|
       if node.text.match?(RootMatcher)
@@ -67,16 +67,17 @@ class Scraper
     basic_root = search_by_phonetic_value(node.xpath('./a').text.match(RootMatcher)[1])
     further_notes = node.text.split(RootMatcher)[-1] unless node.text.split(RootMatcher)[-1] == basic_root.value
     root = DerivedRoot.new(phonetic_value, translation, basic_root, further_notes)
+    @@dictionary << root
   end
 
   def self.make_patterns(root, rows)
     basic_pattern = make_basic_pattern(root, rows[(2..4)], 0, :informal, 1)
     if rows.count == 9 # #independent informal complementary stems
-      complementary1 = make_basic_pattern(root, rows[(7..9)], 0, :informal, 2)
-      complementary2 = make_basic_pattern(root, rows[(7..9)], 1, :informal, 3)
+      complementary1 = make_basic_pattern(root, rows[(6..8)], 0, :informal, 2)
+      complementary2 = make_basic_pattern(root, rows[(6..8)], 1, :informal, 3)
     else # derived complementary patterns
-      complementary1 = make_derived_pattern(basic_pattern, rows[7], 0, :informal, 2)
-      complementary2 = make_derived_pattern(basic_pattern, rows[7], 1, :informal, 3)
+      complementary1 = make_derived_pattern(basic_pattern, rows[6], 0, :informal, 2)
+      complementary2 = make_derived_pattern(basic_pattern, rows[6], 1, :informal, 3)
     end
     if rows[3].xpath('./td').count == 2 # independent formal patterns
       formal_pattern = make_basic_pattern(root, rows[(2..4)], 1, :formal, 1)
@@ -104,12 +105,12 @@ class Scraper
 
   def self.make_derived_pattern(basic_pattern, row, cell_num, designation, pattern_num)
     unneeded_prefix = /[Ss]ame as .+ stems,? /
-    suffix = root.xpath('./td')[cell_num].text.sub(unneeded_prefix, "")
-    DerivedPattern(designation, pattern_num, basic_pattern, suffix)
+    suffix = row.xpath('./td')[cell_num].text.sub(unneeded_prefix, "")
+    DerivedPattern.new(designation, pattern_num, basic_pattern, suffix)
   end
 
   def self.get_notes(node)
-    binding.pry
+    nil
   end
 end
 
@@ -122,4 +123,6 @@ end
 # full.xpath('./tr').count == 9
 # full.xpath('./tr/td').count == 23
 
-all = doc.xpath('')
+Scraper.load_dictionary
+binding.pry
+puts "done"
