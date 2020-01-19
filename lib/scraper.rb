@@ -32,21 +32,6 @@ class Scraper
           binding.pry
         end
       end
-      # if root.translation.downcase == param.downcase
-      #   result[:translation_eq] << root
-      # elsif !root.is_a?(DerivedRoot) && root.stems.any?{|stem| stem.downcase == param.downcase}
-      #   result[:stems_eq] << root
-      # elsif root.translation.downcase.include?(param.downcase)
-      #   result[:translation_contains] << root
-      # elsif !root.is_a?(DerivedRoot) && root.stems.any?{|stem| stem.downcase == param.downcase}
-      #   result[:stems_contain] << root
-      # elsif !root.notes.nil?
-      #   if root.notes.downcase.include?(param.downcase)
-      #     if root.is_a?(BasicRoot) || (root.further_notes.downcase.include?(param.downcase) && !root.basic_root.notes.downcase.include?(param.downcase))
-      #       result[:notes_contain] << root
-      #     end
-      #   end
-      # end
     end
     result
   end
