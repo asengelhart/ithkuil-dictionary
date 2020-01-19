@@ -20,11 +20,10 @@ class Root
 end
 
 class BasicRoot < Root
-  attr_accessor :notes, :derived_roots
+  attr_accessor :derived_roots
 
-  def initialize(value, translation, notes = nil)
+  def initialize(value, translation)
     super(value, translation)
-    @notes = notes
     @patterns = { informal: Array.new(3), formal: Array.new(3) }
     @derived_roots = []
   end
@@ -69,14 +68,15 @@ class BasicRoot < Root
   end
 
   def search(param)
-    translation.include?(param) || notes.include?(param) ? self : search_patterns(param)
+    translation.downcase.include?(param) ? self : search_patterns(param)
   end
 
   def search_patterns(param)
     results = [self]
+    param.downcase!
     patterns.each do |designation, pattern_array|
       pattern_array.each_with_index do |pattern, pattern_index|
-        pattern.stems.each_with_index { |stem, stem_index| results << [designation, pattern_index + 1, stem_index + 1] if stem.include?(param) }
+        pattern.stems.each_with_index { |stem, stem_index| results << [designation, pattern_index + 1, stem_index + 1] if stem.downcase.include?(param) }
       end
     end
     results.size > 1 ? results : nil

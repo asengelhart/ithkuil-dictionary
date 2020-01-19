@@ -23,21 +23,31 @@ class Scraper
   def self.search_by_translation(param)
     result = { translation_eq: [], stems_eq: [], translation_contains: [], stems_contain: [], notes_contain: [] }
     @@dictionary.each do |root|
-      if root.translation.downcase == param.downcase
-        result[:translation_eq] << root
-      elsif !root.is_a?(DerivedRoot) && root.stems.any?{|stem| stem.downcase == param.downcase}
-        result[:stems_eq] << root
-      elsif root.translation.downcase.include?(param.downcase)
-        result[:translation_contains] << root
-      elsif !root.is_a?(DerivedRoot) && root.stems.any?{|stem| stem.downcase == param.downcase}
-        result[:stems_contain] << root
-      elsif !root.notes.nil?
-        if root.notes.downcase.include?(param.downcase)
-          if root.is_a?(BasicRoot) || (root.further_notes.downcase.include?(param.downcase) && !root.basic_root.notes.downcase.include?(param.downcase))
-            result[:notes_contain] << root
-          end
+      search_result = root.search(param.downcase)
+      if search_result.is_a?(Array)
+        search_result[0].stems.any?{|stem| stem.downcase == param.downcase} ? result[:stems_eq] << search_result[0] : result[:stems_contain] << search_result[0]
+      elsif search_result.nil? == false
+        begin
+          search_result.translation == param.downcase ? result[:translation_eq] << search_result : result[:translation_contains] << search_result
+        rescue
+          binding.pry
         end
       end
+      # if root.translation.downcase == param.downcase
+      #   result[:translation_eq] << root
+      # elsif !root.is_a?(DerivedRoot) && root.stems.any?{|stem| stem.downcase == param.downcase}
+      #   result[:stems_eq] << root
+      # elsif root.translation.downcase.include?(param.downcase)
+      #   result[:translation_contains] << root
+      # elsif !root.is_a?(DerivedRoot) && root.stems.any?{|stem| stem.downcase == param.downcase}
+      #   result[:stems_contain] << root
+      # elsif !root.notes.nil?
+      #   if root.notes.downcase.include?(param.downcase)
+      #     if root.is_a?(BasicRoot) || (root.further_notes.downcase.include?(param.downcase) && !root.basic_root.notes.downcase.include?(param.downcase))
+      #       result[:notes_contain] << root
+      #     end
+      #   end
+      # end
     end
     result
   end
@@ -74,7 +84,7 @@ class Scraper
     else
       translation = translation[1]
     end
-    root = BasicRoot.new(phonetic_value, translation, get_notes(node))
+    root = BasicRoot.new(phonetic_value, translation)
     make_patterns(root, rows)
     @@dictionary << root
   end
@@ -100,8 +110,7 @@ class Scraper
     begin
       translation = split_text[2].sub(/(?:w\/ )?(?:the)? stems .+root/i, "")
       basic_root = search_by_phonetic_value(split_text[3])
-      further_notes = split_text[4]
-      root = DerivedRoot.new(phonetic_value, translation, basic_root, further_notes)
+      root = DerivedRoot.new(phonetic_value, translation, basic_root)
       @@dictionary << root
     rescue
       begin
@@ -184,10 +193,6 @@ class Scraper
     unneeded_prefix = /[Ss]ame as .+ stems,? /
     suffix = row.xpath('./td')[cell_num].text.sub(unneeded_prefix, "")
     DerivedPattern.new(designation, pattern_num, basic_pattern, suffix)
-  end
-
-  def self.get_notes(node)
-    nil
   end
 end
 
