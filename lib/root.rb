@@ -96,6 +96,10 @@ class DerivedRoot < Root
     base_root.patterns(designation, pattern_num)
   end
 
+  def stems(designation = nil, pattern_num = nil, stem_num = nil)
+    base_root.stems(designation, pattern_num, stem_num)
+  end
+
   def search(param)
     translation.include?(param) ? self : nil
   end

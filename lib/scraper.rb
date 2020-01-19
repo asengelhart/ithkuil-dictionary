@@ -19,7 +19,7 @@ class Scraper
   end
 
   def self.search_by_translation(param)
-    result = { translation_eq: [], stems_eq: [], translation_contains: [], stems_contain: [], notes_contain: [] }
+    result = { translation_eq: [], stems_eq: [], translation_contains: [], stems_contain: [] }
     @@dictionary.each do |root|
       search_result = root.search(param.downcase)
       if search_result.is_a?(Array)
