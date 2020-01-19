@@ -7,12 +7,33 @@ require 'pry'
 class Scraper
   BASE_URL = 'http://www.ithkuil.net/lexicon.htm'
   Html = open(BASE_URL)
-  Document = load_dictionary(Nokogiri::HTML(html))
+  Scraper.load_dictionary(Nokogiri::HTML(Html))
   RootMatcher = /-([BCÇČDFGHJKLĻMNŇPQRŘSŠTŢVWXYZŻŽ’]+)-/
   @@dictionary = []
 
   def self.search_by_phonetic_value(param)
-    @@dictionary.detect{ |item| item.value.upcase == param.upcase }
+    param.gsub!("'", "’")
+    @@dictionary.detect{ |root| root.value.upcase == param.upcase }
+  end
+
+  def self.search_by_translation(param)
+    result = { translation_eq: [], stems_eq: [], translation_contains: [], stems_contain: [], notes_contain: [] }
+    @@dictionary.each do |root|
+      if root.translation.downcase == param.downcase
+        result[:translation_eq] << root
+      elsif root.stems.any?{|stem| stem.downcase == param.downcase} && !root.is_a?(DerivedRoot)
+        result[:stems_eq] << root
+      elsif root.translation.downcase.include?(param.downcase)
+        result[:translation_contains] << root
+      elsif root.stems.any?{|stem| stem.downcase == param.downcase} && !root.is_a?(DerivedRoot)
+        result[:stems_contain] << root
+      elsif root.notes.downcase.include?(param.downcase)
+        if root.is_a?(BasicRoot) || (root.further_notes.downcase.include?(param.downcase) && !root.basic_root.notes.downcase.include?(param.downcase))
+          result[:notes_contain] << root
+        end
+      end
+    end
+    result
   end
 
   private
@@ -20,7 +41,7 @@ class Scraper
   def self.load_dictionary(html)
     to_search = html.xpath("//table | //p")
     to_search.each do |node|
-      if RootMatcher.match?(node.text)
+      if node.text.match?(RootMatcher)
         if node.name == 'table' 
           make_basic_root(node) 
         elsif node.parent.name == 'body'
@@ -33,16 +54,19 @@ class Scraper
   def self.make_basic_root(node)
     rows = node.xpath('./tr | ./tbody/tr')
     definition_row = rows[0]
-    phonetic_value = RootMatcher.match(definition_row.text)[1]
-    translation = /‘(.*)’/.match(definition_row.text)[1]
+    phonetic_value = definition_row.text.match(RootMatcher)[1]
+    translation = definition_row.text.match(/‘(.*?)’/)[1]
     root = BasicRoot.new(phonetic_value, translation, get_notes(node))
     make_patterns(root, rows)
     @@dictionary << root
   end
 
   def self.make_derived_root(node)
-    phonetic_value = RootMatcher.match(node.text)[1]
-    
+    phonetic_value = node.text.match(RootMatcher)[1]
+    translation = node.text.match(/(?:-[[:alpha:]]+-)‘?(.*?)[’—]/)[1]
+    basic_root = search_by_phonetic_value(node.xpath('./a').text.match(RootMatcher)[1])
+    further_notes = node.text.split(RootMatcher)[-1] unless node.text.split(RootMatcher)[-1] == basic_root.value
+    root = DerivedRoot.new(phonetic_value, translation, basic_root, further_notes)
   end
 
   def self.make_patterns(root, rows)
@@ -82,6 +106,10 @@ class Scraper
     unneeded_prefix = /[Ss]ame as .+ stems,? /
     suffix = root.xpath('./td')[cell_num].text.sub(unneeded_prefix, "")
     DerivedPattern(designation, pattern_num, basic_pattern, suffix)
+  end
+
+  def self.get_notes(node)
+    binding.pry
   end
 end
 
