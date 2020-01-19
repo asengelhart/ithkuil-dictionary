@@ -2,7 +2,6 @@ require 'open-uri'
 require 'nokogiri'
 require_relative './root.rb'
 require_relative './pattern.rb'
-require 'pry'
 
 class Scraper
   # BASE_URL = 'http://www.ithkuil.net/lexicon.htm'
@@ -57,17 +56,6 @@ class Scraper
     html = Nokogiri::HTML(open(base_url))
     html.xpath('/html/body/table').each{ |node| make_basic_root(node) if node.text.match?(RootMatcher) }
     html.xpath('/html/body/p').each{ |node| make_derived_root(node) if node.text.match?(RootMatcher) }
-    binding.pry
-    # to_search = html.xpath("//table | //p")
-    # to_search.each do |node|
-    #   if node.text.match?(RootMatcher)
-    #     if node.name == 'table' 
-    #       make_basic_root(node) 
-    #     elsif node.parent.name == 'body'
-    #       make_derived_root(node)
-    #     end
-    #   end
-    # end
   end
 
   def self.make_basic_root(node)
@@ -195,16 +183,3 @@ class Scraper
     DerivedPattern.new(designation, pattern_num, basic_pattern, suffix)
   end
 end
-
-# small.xpath('./tr').count == 7
-# small.xpath('./tr/td').count == 10
-# with_formal.xpath('./tr').count == 7
-# with_formal.xpath('./tr/td').count == 15
-# wtih_comp.xpath('./tr').count == 9
-# with_comp.xpath('./tr/td').count == 14
-# full.xpath('./tr').count == 9
-# full.xpath('./tr/td').count == 23
-
-Scraper.load_dictionary
-binding.pry
-puts "done"
