@@ -13,7 +13,7 @@ class Scraper
 
   def self.search_by_phonetic_value(param)
     unless param.nil?
-      return @@dictionary.detect{ |root| root.value.upcase.gsub("’", "'") == param.upcase }
+      return @@dictionary.detect{ |root| root.value.upcase.gsub("’", "'") == param.upcase.gsub("’", "'") }
     end
     nil
   end

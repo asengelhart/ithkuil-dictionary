@@ -1,4 +1,4 @@
-require_relative '../scraper.rb'
+require_relative './scraper.rb'
 
 class CLI
 
@@ -96,7 +96,7 @@ class CLI
   def self.display_root(root)
     puts "-#{root.value}- = #{root.translation}"
     root.patterns.each do |designation, pattern_array|
-      designation == :informal ? puts "Informal patterns:" : puts "Formal patterns"
+      puts (designation == :informal ? "Informal patterns:" : "Formal patterns")
       pattern_array.each do |pattern|
         puts "Pattern #{pattern.pattern_num}:"
         pattern.stems.each_with_index {|stem, index| puts "#{index + 1}. #{stem}"}
@@ -111,6 +111,5 @@ class CLI
     For more information, or a complete grammar, visit www.ithkuil.net.
     GOODBYE
 
-    break
   end
 end
