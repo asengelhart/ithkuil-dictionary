@@ -60,7 +60,7 @@ class BasicRoot < Root
       end
     else # designation.is_nil?
       pattern_results.reduce([]) do |memo, patterns|
-        patterns.reduce(memo) do |memo2, pattern|
+        patterns[1].reduce(memo) do |memo2, pattern|
           memo2 << pattern.stems
           memo2.flatten
         end
@@ -84,9 +84,10 @@ class BasicRoot < Root
 end
 
 class DerivedRoot < Root
-  attr_reader :base_root
-  def initialize(value, translation, base_root)
+  attr_reader :base_root, :further_notes
+  def initialize(value, translation, base_root, further_notes = nil)
     super(value, translation)
+    @further_notes = further_notes
     @base_root = base_root
     base_root.derived_roots << self
   end

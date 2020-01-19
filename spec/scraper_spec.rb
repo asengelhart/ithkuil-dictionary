@@ -35,9 +35,9 @@ RSpec.describe 'Scraper' do
       result = Scraper.search_translation("spatio-temporal")
       expect(result.include?{ |item| item.is_a?(BasicRoot) })
     end
-    it 'includes correct value, translation, and stems for basic roots'
-      expect(result.include?{ |item| item.value == test_root.value }
-      expect(result.include?{ |item| item.translation == test_root.translation }
+    it 'includes correct value, translation, and stems for basic roots' do
+      expect(result.include?{ |item| item.value == test_root.value })
+      expect(result.include?{ |item| item.translation == test_root.translation })
       expect(result.include?{ |item| item.stems == test_root.stems })
     end
   end
