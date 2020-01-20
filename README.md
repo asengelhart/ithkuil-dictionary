@@ -1,44 +1,39 @@
-# Ithkuil::Dictionary
+# Ithkuil-Dictionary
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/ithkuil/dictionary`. To experiment with that code, run `bin/console` for an interactive prompt.
+This CLI application parses the Ithkuil lexicon page at www.ithkuil.net/lexicon.htm,
+and allows the user to look up roots either by their phonetic value or by their
+English translation.
 
-TODO: Delete this and the text above, and describe your gem
+# Installation
 
-## Installation
+Clone this repository, then run `bundle install`.
 
-Add this line to your application's Gemfile:
+To run the application, run `bin/console`.
 
-```ruby
-gem 'ithkuil-dictionary'
-```
+# Usage
 
-And then execute:
+The main menu allows you to select between entering a phonetic value and an English translation.
 
-    $ bundle install
+Phonetic values must be entered exactly as in the lexicon (case insensitive).  Special characters
+can be found here:
 
-Or install it yourself as:
+Ç Č Ļ Ň Ř Š Ţ Ż Ž
 
-    $ gem install ithkuil-dictionary
+Translation may be provided in part or whole.  Translations are sorted with exact matches at top,
+followed by exact matches among the root's stems, then partial matches for roots and stems below that.
+Inspect a root by inputting the number next to it.
 
-## Usage
+# Contributing
 
-TODO: Write usage instructions here
+Any suggestions or bugfixes may be made by way of pull requests or messaging me.
 
-## Development
+# License
+Copyright © 2020, Alex S. Engelhart
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-## Contributing
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/ithkuil-dictionary. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/ithkuil-dictionary/blob/master/CODE_OF_CONDUCT.md).
-
-
-## License
-
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-## Code of Conduct
-
-Everyone interacting in the Ithkuil::Dictionary project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/ithkuil-dictionary/blob/master/CODE_OF_CONDUCT.md).
+https://mit_license.org
