@@ -81,8 +81,8 @@ class CLI
         input_num = gets.strip.to_i
       end
       display_root(results_array[input_num - 1])
-      intro_menu
     end
+    intro_menu
   end
 
   def self.ask_phonetic_value
