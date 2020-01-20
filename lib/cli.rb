@@ -8,7 +8,9 @@ class CLI
   end
 
   def self.intro_menu
-    puts <<-MENU
+    puts <<~MENU
+
+
     Welcome to the Ithkuil Lexicon CLI Interface!
     Please choose from the following options:
     1. Search for a root word by its English translation
@@ -89,12 +91,17 @@ class CLI
     puts "Enter value here: "
     input_value = gets.strip.upcase
     result = Scraper.search_by_phonetic_value(input_value)
-    result ? display_root(result) : "No such root was found."
+    if result
+      display_root(result)
+    else
+      puts "No such root found."
+    end
     intro_menu
   end
 
   def self.display_root(root)
-    puts "-#{root.value}- = #{root.translation}"
+    puts "-#{root.value}- = #{root.translation.strip}"
+    puts "Derived from: -#{root.base_root.value}- = #{root.base_root.translation.strip}" if root.is_a?(DerivedRoot)
     root.patterns.each do |designation, pattern_array|
       puts (designation == :informal ? "Informal patterns:" : "Formal patterns")
       pattern_array.each do |pattern|
